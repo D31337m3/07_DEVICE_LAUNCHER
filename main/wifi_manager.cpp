@@ -81,12 +81,8 @@ static esp_err_t radio_control_handler(httpd_req_t *req)
 
 esp_err_t wifi_manager_init(void)
 {
-    nvs_flash_init();
-    esp_event_loop_create_default();
-    wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
-    esp_wifi_init(&cfg);
-    esp_wifi_set_mode(WIFI_MODE_STA);
-    esp_wifi_start();
+    // WiFi (netif, event loop, STA mode, start) is fully handled by wifi_service_init()
+    // inside boot_service_init(). We only need to start the HTTP server here.
 
     // Start HTTP server
     httpd_config_t server_config = HTTPD_DEFAULT_CONFIG();

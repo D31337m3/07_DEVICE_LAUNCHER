@@ -18,12 +18,6 @@ static const char *TAG = "app";
 
 extern "C" void app_main(void)
 {
-    // Initialize WiFi manager and web UI
-    wifi_manager_init();
-
-    // Initialize radio player
-    radio_player_init();
-
     boot_service_result_t boot = {};
     esp_err_t boot_err = boot_service_init(&boot);
     if (boot_err != ESP_OK) {
@@ -33,6 +27,12 @@ extern "C" void app_main(void)
             vTaskDelay(pdMS_TO_TICKS(1000));
         }
     }
+
+    // Initialize WiFi manager and web UI (after boot_service so netif/event loop are ready)
+    wifi_manager_init();
+
+    // Initialize radio player
+    radio_player_init();
 
     ESP_LOGI(TAG, "Init UI - App Carousel");
     ESP_LOGI(TAG, "About to lock display...");
